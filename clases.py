@@ -7,6 +7,8 @@ import constantes
 import scipy as sp
 import scipy.constants
 
+# Clase para mantener los datos de un cuerpo astrofísico simple (masa puntual)
+
 class Cuerpo(object):
 
     # Constructor de la clase
@@ -32,6 +34,19 @@ class Cuerpo(object):
     def z(self):
         return self.posicion[2] / sp.constants.astronomical_unit
 
+    #Velocidades en km/s
+    @property
+    def vx(self):
+        return self.velocidad[0] / 1000
+
+    @property
+    def vy(self):
+        return self.velocidad[1] / 1000
+
+    @property
+    def vz(self):
+        return self.velocidad[2] / 1000
+
     # Defino el operador de comparacion
     def __eq__(self, other):
         if isinstance(other, Cuerpo):
@@ -47,4 +62,9 @@ class Cuerpo(object):
 
     # Imprimo el cuerpo, masa en masas solares, posicion al origen en UA, velocidad en km/s
     def __str__(self):
-        return "%s: %s,%s,%s,%s,%s,%s,%s" % (self.nombre, self.masa/constantes.MASA_SOL, self.posicion[0]/sp.constants.astronomical_unit, self.posicion[1]/sp.constants.astronomical_unit, self.posicion[2]/sp.constants.astronomical_unit, self.velocidad[0]/1000, self.velocidad[1]/1000, self.velocidad[2]/1000)
+        return "%s: %s,%s,%s,%s,%s,%s,%s" % (self.nombre, self.masa/constantes.MASA_SOL,
+                                             self.posicion[0]/sp.constants.astronomical_unit,
+                                             self.posicion[1]/sp.constants.astronomical_unit,
+                                             self.posicion[2]/sp.constants.astronomical_unit,
+                                             self.velocidad[0]/1000, self.velocidad[1]/1000,
+                                             self.velocidad[2]/1000)

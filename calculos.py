@@ -6,11 +6,6 @@ import scipy as sp
 import scipy.constants
 import numpy as np
 
-# r1 y r2 son arreglos numpy 3d de posicion
-
-
-def centro_de_masa(m1, r1, m2, r2):
-    return ((m1 * r1) + (m2 * r2)) / (m1 + m2)
 
 # Ecuacion de movimiento
 

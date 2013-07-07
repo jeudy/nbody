@@ -3,8 +3,11 @@
 from clases import Cuerpo
 from calculos import aceleracion_gravitacional
 
-# Euler
+# Método de Euler
 # dt en segundos
+
+# r_i+1 = r_i * v_i
+# v_i+1 =
 
 def euler_step(cuerpos, dt):
     for cuerpo in cuerpos:
