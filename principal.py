@@ -14,7 +14,7 @@ dt = 60. * 60. * 24.
 
 # Condiciones iniciales
 # El Sol estará en el origen de coordenadas y en reposo
-sol = Cuerpo(0, constantes.MASA_SOL, 0, 0, 0, 0, 0, 0, "Estrella1")
+sol = Cuerpo(0, constantes.MASA_SOL, 0, 0, 0, 0, 0, 0, "Sol")
 # La Tierra estará a 1 UA y la velocidad inicial será el promedio de su velocidad orbital: ~29 km/s
 tierra = Cuerpo(1, constantes.MASA_TIERRA, sp.constants.astronomical_unit, 0, 0, 0, 2.9E4, 0, "Tierra")
 # Júpiter estará a 5 UA y la velocidad inicial será el promedio de su velocidad orbital: ~13 km/s
