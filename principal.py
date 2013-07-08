@@ -6,6 +6,7 @@ from integrador import euler_step
 import scipy as sp
 import scipy.constants
 import matplotlib.pyplot as plt
+from calculos import calcula_energia_total
 
 # inicializacion de condiciones iniciales
 
@@ -49,6 +50,9 @@ historia_vx3 = []
 historia_vy3 = []
 historia_vz3 = []
 
+# Guardamos la energia total al inicio de la simulación
+# para verificar que al final el sistema conserve la energía
+etot_inicial = calcula_energia_total(cuerpos)
 
 while steps >= 0:
     euler_step(cuerpos, dt)
@@ -80,6 +84,11 @@ while steps >= 0:
     historia_vz3.append(jupiter.vz)
 
     steps -= 1
+
+etot_final = calcula_energia_total(cuerpos)
+print "Energia total inicial: %s" % (str(etot_inicial))
+print "Energia total final: %s" % (str(etot_final))
+
 
 # Ploteo de las posiciones a lo largo de cada paso. Nos muestra las orbitas
 plt.plot(historia_x1, historia_y1, 'r.')
