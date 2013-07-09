@@ -11,7 +11,7 @@ from calculos import calcula_energia_total
 # inicializacion de condiciones iniciales
 
 # Un día en segundos
-dt = 60. * 60. * 24.
+dt = 60. * 60. * 24
 
 # Condiciones iniciales
 # El Sol estará en el origen de coordenadas y en reposo

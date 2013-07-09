@@ -8,6 +8,8 @@ import scipy.constants
 import matplotlib.pyplot as plt
 from calculos import calcula_energia_total
 
+from matplotlib import animation
+
 # inicializacion de condiciones iniciales
 
 # Un dia en segundos
@@ -20,12 +22,16 @@ estrella1 = Cuerpo(0, constantes.MASA_SOL*1.09, -10.9 * sp.constants.astronomica
 estrella2 = Cuerpo(1, constantes.MASA_SOL*0.9, 12.8 * sp.constants.astronomical_unit, 0, 0, 0, -2.1E3, 0, "Alpha Centauri B")
 planeta = Cuerpo(2, constantes.MASA_TIERRA, -9.9 * sp.constants.astronomical_unit, 0, 0, 0, -3.1E4, 0, "Planeta")
 
-steps = 366 * 50
+steps = 366 * 150
+
+original_steps = 366 * 150
 
 # Lista de cuerpos que componen el sistema
 cuerpos = [estrella1, estrella2, planeta]
 
 # Listas en memoria para guardar todos los datos de la evolución para luego graficarlos.
+
+guarde_cada = 25
 
 historia_x1 = []
 historia_y1 = []
@@ -39,11 +45,21 @@ historia_x3 = []
 historia_y3 = []
 historia_z3 = []
 
-save_every = 10
-
 # Guardamos la energia total al inicio de la simulación
 # para verificar que al final el sistema conserve la energía
 etot_inicial = calcula_energia_total(cuerpos)
+
+fig = plt.figure("N Bdy")
+ax = fig.add_subplot(111, title='N Body')
+#ax = plt.axes(projection='3d')
+
+x = [estrella1.x, estrella2.x, planeta.x]
+y = [estrella1.y, estrella2.y, planeta.y]
+
+sp, = ax.plot(x, y, 'r.')
+
+ax.set_ylim(-10, 10)
+ax.set_xlim(-15, 15)
 
 while steps >= 0:
     euler_step(cuerpos, dt)
@@ -53,7 +69,8 @@ while steps >= 0:
 
     # En cada paso, guardamos los valores de posición y velocidad para graficarlos al final
 
-    if steps % save_every == 0:
+    if steps % guarde_cada == 0:
+
         historia_x1.append(estrella1.x)
         historia_y1.append(estrella1.y)
         historia_z1.append(estrella1.z)
@@ -72,9 +89,12 @@ etot_final = calcula_energia_total(cuerpos)
 print "Energia total inicial: %s" % (str(etot_inicial))
 print "Energia total final: %s" % (str(etot_final))
 
-# Ploteo de las posiciones a lo largo de cada paso. Nos muestra las orbitas
-plt.plot(historia_x1, historia_y1, 'r.')
-plt.plot(historia_x2, historia_y2, 'g.')
-plt.plot(historia_x3, historia_y3, 'b.')
+def update(i):
+    x = [historia_x1[i], historia_x2[i], historia_x3[i]]
+    y = [historia_y1[i], historia_y2[i], historia_y3[i]]
+    sp.set_data(x, y)
+    return sp,
+
+ani = animation.FuncAnimation(fig, update, frames=original_steps/guarde_cada, interval=1, repeat=False)
 
 plt.show()
