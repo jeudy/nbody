@@ -97,8 +97,9 @@ def update(i):
 
 ani = animation.FuncAnimation(fig, update, frames=original_steps/guarde_cada, repeat=False)
 
-plt.show()
+#plt.show()
 
 # Guarda la animación en un video avi
 
-ani.save("movie.avi", codec='avi')
+ani.save("movie.avi", codec='avi', fps=30)
+
