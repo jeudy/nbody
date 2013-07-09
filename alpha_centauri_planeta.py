@@ -95,6 +95,10 @@ def update(i):
     sp.set_data(x, y)
     return sp,
 
-ani = animation.FuncAnimation(fig, update, frames=original_steps/guarde_cada, interval=1, repeat=False)
+ani = animation.FuncAnimation(fig, update, frames=original_steps/guarde_cada, repeat=False)
 
 plt.show()
+
+# Guarda la animación en un video avi
+
+ani.save("movie.avi", codec='avi')
