@@ -37,10 +37,11 @@ def calcula_energia_total(cuerpos):
     ekin = 0
     epot = 0
     for cuerpo in cuerpos:
-        ekin += energia_cinetica(cuerpo.masa, cuerpo.velocidad)
+        ekin += energia_cinetica(cuerpo['masa'], cuerpo['velocidad'])
         for c in cuerpos:
-            if cuerpo != c:
-                epot += energia_potencial(cuerpo.masa, c.masa, cuerpo.posicion, c.posicion)
+            if np.any(cuerpo['posicion'] != c['posicion']):
+                epot += energia_potencial(cuerpo['masa'], c['masa'],
+                                          cuerpo['posicion'], c['posicion'])
 
     #Se divide entre 2 porque el aporte de cada particula se calculó 2 veces
     epot /= 2

@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
 
 import constantes
-from clases import Cuerpo
 from integrador import euler_step
 import scipy as sp
+import numpy as np
 import scipy.constants
 import matplotlib.pyplot as plt
 from calculos import calcula_energia_total
@@ -15,13 +15,22 @@ dt = 60. * 60. * 24
 
 # Condiciones iniciales
 # El Sol estará en el origen de coordenadas y en reposo
-sol = Cuerpo(0, constantes.MASA_SOL, 0, 0, 0, 0, 0, 0, "Sol")
-# La Tierra estará a 1 UA y la velocidad inicial será el promedio de su velocidad orbital: ~29 km/s
-tierra = Cuerpo(1, constantes.MASA_TIERRA, sp.constants.astronomical_unit, 0, 0, 0, 2.9E4, 0, "Tierra")
-# Júpiter estará a 5 UA y la velocidad inicial será el promedio de su velocidad orbital: ~13 km/s
-jupiter = Cuerpo(2, constantes.MASA_JUPITER, 5.0 * sp.constants.astronomical_unit, 0, 0, 0, 1.3E4, 0, "Jupiter")
+sol = {'masa': constantes.MASA_SOL,
+       'posicion': np.array([0, 0, 0]),
+       'velocidad': np.array([0, 0, 0])}
 
-# Integraremos la ecuación de movimiento por 11 años (aproximadamente, el periodo orbital de Jupiter
+# La Tierra estará a 1 UA y la velocidad inicial será el promedio de su velocidad orbital: ~29 km/s
+tierra = {'masa': constantes.MASA_TIERRA,
+          'posicion': np.array([sp.constants.astronomical_unit, 0, 0]),
+          'velocidad': np.array([0, 2.9E4, 0])}
+
+# Júpiter estará a 5 UA y la velocidad inicial será el promedio de su velocidad orbital: ~13 km/s
+jupiter = {'masa': constantes.MASA_JUPITER,
+           'posicion': np.array([5.0 * sp.constants.astronomical_unit, 0, 0]),
+           'velocidad': np.array([0, 1.3E4, 0])}
+
+# Integraremos la ecuación de movimiento por 11 años
+# (aproximadamente, el periodo orbital de Jupiter
 steps = 366 * 11
 
 # Lista de cuerpos que componen el sistema
@@ -62,26 +71,26 @@ while steps >= 0:
 
     # En cada paso, guardamos los valores de posición y velocidad para graficarlos al final
 
-    historia_x1.append(sol.x)
-    historia_y1.append(sol.y)
-    historia_z1.append(sol.z)
-    historia_vx1.append(sol.vx)
-    historia_vy1.append(sol.vy)
-    historia_vz1.append(sol.vz)
+    historia_x1.append(sol['posicion'][0])
+    historia_y1.append(sol['posicion'][1])
+    historia_z1.append(sol['posicion'][2])
+    historia_vx1.append(sol['velocidad'][0])
+    historia_vy1.append(sol['velocidad'][1])
+    historia_vz1.append(sol['velocidad'][2])
 
-    historia_x2.append(tierra.x)
-    historia_y2.append(tierra.y)
-    historia_z2.append(tierra.z)
-    historia_vx2.append(tierra.vx)
-    historia_vy2.append(tierra.vy)
-    historia_vz2.append(tierra.vz)
+    historia_x2.append(tierra['posicion'][0])
+    historia_y2.append(tierra['posicion'][1])
+    historia_z2.append(tierra['posicion'][2])
+    historia_vx2.append(tierra['velocidad'][0])
+    historia_vy2.append(tierra['velocidad'][1])
+    historia_vz2.append(tierra['velocidad'][2])
 
-    historia_x3.append(jupiter.x)
-    historia_y3.append(jupiter.y)
-    historia_z3.append(jupiter.z)
-    historia_vx3.append(jupiter.vx)
-    historia_vy3.append(jupiter.vy)
-    historia_vz3.append(jupiter.vz)
+    historia_x3.append(jupiter['posicion'][0])
+    historia_y3.append(jupiter['posicion'][1])
+    historia_z3.append(jupiter['posicion'][2])
+    historia_vx3.append(jupiter['velocidad'][0])
+    historia_vy3.append(jupiter['velocidad'][1])
+    historia_vz3.append(jupiter['velocidad'][2])
 
     steps -= 1
 
