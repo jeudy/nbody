@@ -1,10 +1,9 @@
 # -*- coding: UTF-8 -*-
 
 import constantes
-from clases import Cuerpo
 from integrador import euler_step
 import scipy as sp
-import scipy.constants
+import numpy as np
 import matplotlib.pyplot as plt
 from calculos import calcula_energia_total
 
@@ -15,8 +14,13 @@ dt = 60. * 60.
 
 # Condiciones iniciales
 
-estrella1 = Cuerpo(0, constantes.MASA_SOL/2, -3 * sp.constants.astronomical_unit, 0, 0, 0, 5E3, 0, "Estrella1")
-estrella2 = Cuerpo(1, constantes.MASA_SOL/2, 3 * sp.constants.astronomical_unit, 0, 0, 0, -5E3, 0, "Estrella2")
+estrella1 = {'masa': constantes.MASA_SOL/5.,
+             'posicion': np.array([-3 * sp.constants.astronomical_unit, 0, 0]),
+             'velocidad': np.array([0, 5E3, 0])}
+
+estrella2 = {'masa': constantes.MASA_SOL/2.,
+             'posicion': np.array([3 * sp.constants.astronomical_unit, 0, 0]),
+             'velocidad': np.array([0, -5E3, 0])}
 
 # Integraremos la ecuación de movimiento por 10 años
 # 10 años para estrellas genericas
@@ -50,13 +54,13 @@ while steps >= 0:
     # En cada paso, guardamos los valores de posición y velocidad para graficarlos al final
 
     if steps % save_every == 0:
-        historia_x1.append(estrella1.x)
-        historia_y1.append(estrella1.y)
-        historia_z1.append(estrella1.z)
+        historia_x1.append(estrella1['posicion'][0])
+        historia_y1.append(estrella1['posicion'][1])
+        historia_z1.append(estrella1['posicion'][2])
 
-        historia_x2.append(estrella2.x)
-        historia_y2.append(estrella2.y)
-        historia_z2.append(estrella2.z)
+        historia_x2.append(estrella2['posicion'][0])
+        historia_y2.append(estrella2['posicion'][1])
+        historia_z2.append(estrella2['posicion'][2])
 
     steps -= 1
 

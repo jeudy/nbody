@@ -4,7 +4,6 @@ import constantes
 from integrador import euler_step
 import scipy as sp
 import numpy as np
-import scipy.constants
 import matplotlib.pyplot as plt
 from calculos import calcula_energia_total
 
@@ -26,7 +25,7 @@ tierra = {'masa': constantes.MASA_TIERRA,
 
 # Júpiter estará a 5 UA y la velocidad inicial será el promedio de su velocidad orbital: ~13 km/s
 jupiter = {'masa': constantes.MASA_JUPITER,
-           'posicion': np.array([5.0 * sp.constants.astronomical_unit, 0, 0]),
+           'posicion': np.array([-5.0 * sp.constants.astronomical_unit, 0, 0]),
            'velocidad': np.array([0, 1.3E4, 0])}
 
 # Integraremos la ecuación de movimiento por 11 años
