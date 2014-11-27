@@ -14,7 +14,7 @@ dt = 60. * 60.
 
 # Condiciones iniciales
 
-estrella1 = {'masa': constantes.MASA_SOL/5.,
+estrella1 = {'masa': constantes.MASA_SOL/2.,
              'posicion': np.array([-3 * sp.constants.astronomical_unit, 0, 0]),
              'velocidad': np.array([0, 5E3, 0])}
 
