@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
 
 import constantes
-from clases import Cuerpo
 from integrador import euler_step
 import scipy as sp
+import numpy as np
 import scipy.constants
 import matplotlib.pyplot as plt
 from calculos import calcula_energia_total
@@ -12,26 +12,36 @@ from matplotlib import animation
 
 # inicializacion de condiciones iniciales
 
-# Un dia en segundos
+
 # OJO, cambiar a mas pequeño y ver valor de conservacion de energia
-dt = 60. * 60. * 24
+dt = 60. * 60.  # * 24.
 
 # Condiciones iniciales
 
-estrella1 = Cuerpo(0, constantes.MASA_SOL*1.09, -10.9 * sp.constants.astronomical_unit, 0, 0, 0, 2.1E3, 0, "Alpha Centauri A")
-estrella2 = Cuerpo(1, constantes.MASA_SOL*0.9, 12.8 * sp.constants.astronomical_unit, 0, 0, 0, -2.1E3, 0, "Alpha Centauri B")
-planeta = Cuerpo(2, constantes.MASA_TIERRA, -9.9 * sp.constants.astronomical_unit, 0, 0, 0, -3.1E4, 0, "Planeta")
+estrella1 = {'masa': constantes.MASA_SOL*1.09,
+             'posicion': np.array([-10.9 * sp.constants.astronomical_unit, 0, 0]),
+             'velocidad': np.array([0, 2.1E3, 0]),
+             'nombre': "Alpha Centauri A"}
 
-steps = 366 * 150
+estrella2 = {'masa': constantes.MASA_SOL*0.9,
+             'posicion': np.array([12.8 * sp.constants.astronomical_unit, 0, 0]),
+             'velocidad': np.array([0, -2.1E3, 0]),
+             'nombre': "Alpha Centauri B"}
 
-original_steps = 366 * 150
+planeta = {'masa': constantes.MASA_TIERRA,
+           'posicion': np.array([-9.9 * sp.constants.astronomical_unit, 0, 0]),
+           'velocidad': np.array([0, -3.1E4, 0]),
+           'nombre': "Planeta"}
+
+# 150 años
+steps = 366 * 24 * 50
 
 # Lista de cuerpos que componen el sistema
 cuerpos = [estrella1, estrella2, planeta]
 
 # Listas en memoria para guardar todos los datos de la evolución para luego graficarlos.
 
-guarde_cada = 25
+guarde_cada = 200
 
 historia_x1 = []
 historia_y1 = []
@@ -49,18 +59,6 @@ historia_z3 = []
 # para verificar que al final el sistema conserve la energía
 etot_inicial = calcula_energia_total(cuerpos)
 
-fig = plt.figure("N Bdy")
-ax = fig.add_subplot(111, title='N Body')
-#ax = plt.axes(projection='3d')
-
-x = [estrella1.x, estrella2.x, planeta.x]
-y = [estrella1.y, estrella2.y, planeta.y]
-
-sp, = ax.plot(x, y, 'r.')
-
-ax.set_ylim(-10, 10)
-ax.set_xlim(-15, 15)
-
 while steps >= 0:
     euler_step(cuerpos, dt)
     # Mensaje para ir viendo el avance del proceso
@@ -71,17 +69,17 @@ while steps >= 0:
 
     if steps % guarde_cada == 0:
 
-        historia_x1.append(estrella1.x)
-        historia_y1.append(estrella1.y)
-        historia_z1.append(estrella1.z)
+        historia_x1.append(estrella1['posicion'][0])
+        historia_y1.append(estrella1['posicion'][1])
+        historia_z1.append(estrella1['posicion'][2])
 
-        historia_x2.append(estrella2.x)
-        historia_y2.append(estrella2.y)
-        historia_z2.append(estrella2.z)
+        historia_x2.append(estrella2['posicion'][0])
+        historia_y2.append(estrella2['posicion'][1])
+        historia_z2.append(estrella2['posicion'][2])
 
-        historia_x3.append(planeta.x)
-        historia_y3.append(planeta.y)
-        historia_z3.append(planeta.z)
+        historia_x3.append(planeta['posicion'][0])
+        historia_y3.append(planeta['posicion'][1])
+        historia_z3.append(planeta['posicion'][2])
 
     steps -= 1
 
@@ -89,17 +87,8 @@ etot_final = calcula_energia_total(cuerpos)
 print "Energia total inicial: %s" % (str(etot_inicial))
 print "Energia total final: %s" % (str(etot_final))
 
-def update(i):
-    x = [historia_x1[i], historia_x2[i], historia_x3[i]]
-    y = [historia_y1[i], historia_y2[i], historia_y3[i]]
-    sp.set_data(x, y)
-    return sp,
+plt.plot(historia_x1, historia_y1, 'r.')
+plt.plot(historia_x2, historia_y2, 'g.')
+plt.plot(historia_x3, historia_y3, 'b.')
 
-ani = animation.FuncAnimation(fig, update, frames=original_steps/guarde_cada, repeat=False)
-
-#plt.show()
-
-# Guarda la animación en un video avi
-
-ani.save("movie.avi", codec='avi', fps=30)
-
+plt.show()
