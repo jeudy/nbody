@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
 
 import constantes
-from clases import Cuerpo
 from integrador import euler_step
 import scipy as sp
+import numpy as np
 import scipy.constants
 import matplotlib.pyplot as plt
 from calculos import calcula_energia_total
@@ -15,9 +15,13 @@ dt = 60
 
 # Condiciones iniciales
 # La estrella estará en el origen de coordenadas y en reposo
-estrella = Cuerpo(0, constantes.MASA_SOL, 0, 0, 0, 0, 0, 0, "Estrella")
+estrella = {'masa': constantes.MASA_SOL,
+             'posicion': np.array([0., 0., 0.]),
+             'velocidad': np.array([0., 0., 0.])}
 # Datos aproximadamente como 51 Pegasi
-hot_jupiter = Cuerpo(1, 0.47 * constantes.MASA_JUPITER, 0.05 * sp.constants.astronomical_unit, 0, 0, 0, 106E3, 0, "Jupiter")
+hot_jupiter = {'masa': constantes.MASA_JUPITER,
+             'posicion': np.array([0.05 * sp.constants.astronomical_unit, 0., 0.]),
+             'velocidad': np.array([0., 106E3, 0.])}
 
 # 5 Dias
 steps = 24 * 5 * 60
@@ -47,13 +51,13 @@ while steps >= 0:
 
     # En cada paso, guardamos los valores de posición y velocidad para graficarlos al final
 
-    historia_x1.append(estrella.x)
-    historia_y1.append(estrella.y)
-    historia_z1.append(estrella.z)
+    historia_x1.append(estrella['posicion'][0])
+    historia_y1.append(estrella['posicion'][1])
+    historia_z1.append(estrella['posicion'][2])
 
-    historia_x2.append(hot_jupiter.x)
-    historia_y2.append(hot_jupiter.y)
-    historia_z2.append(hot_jupiter.z)
+    historia_x2.append(hot_jupiter['posicion'][0])
+    historia_y2.append(hot_jupiter['posicion'][1])
+    historia_z2.append(hot_jupiter['posicion'][2])
 
     steps -= 1
 
