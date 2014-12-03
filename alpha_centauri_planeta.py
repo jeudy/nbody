@@ -7,14 +7,16 @@ import numpy as np
 import scipy.constants
 import matplotlib.pyplot as plt
 from calculos import calcula_energia_total
-
+from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import animation
 
 # inicializacion de condiciones iniciales
 
 
+visualizacion = raw_input("Como desea visualizar resultados? estatico o animado? ")
+
 # OJO, cambiar a mas pequeño y ver valor de conservacion de energia
-dt = 60. * 60.  # * 24.
+dt = 60. * 60. * 24.
 
 # Condiciones iniciales
 
@@ -34,14 +36,14 @@ planeta = {'masa': constantes.MASA_TIERRA,
            'nombre': "Planeta"}
 
 # 150 años
-steps = 366 * 24 * 50
+steps = 366 * 100
 
 # Lista de cuerpos que componen el sistema
 cuerpos = [estrella1, estrella2, planeta]
 
 # Listas en memoria para guardar todos los datos de la evolución para luego graficarlos.
 
-guarde_cada = 200
+guarde_cada = 20
 
 historia_x1 = []
 historia_y1 = []
@@ -87,8 +89,43 @@ etot_final = calcula_energia_total(cuerpos)
 print "Energia total inicial: %s" % (str(etot_inicial))
 print "Energia total final: %s" % (str(etot_final))
 
-plt.plot(historia_x1, historia_y1, 'r.')
-plt.plot(historia_x2, historia_y2, 'g.')
-plt.plot(historia_x3, historia_y3, 'b.')
 
-plt.show()
+if visualizacion.lower() == 'estatico':
+    plt.plot(historia_x1, historia_y1, 'r.')
+    plt.plot(historia_x2, historia_y2, 'g.')
+    plt.plot(historia_x3, historia_y3, 'b.')
+    #
+    plt.show()
+else:
+    fig = plt.figure("Alfa Centauri")
+
+    ax = plt.axes(projection='3d')
+
+    # Dibujo el origen de coordenadas. Ejercicio: centro de masa del sistema
+    ax.plot([0], [0], [0], 'g+')
+
+    sp, = ax.plot([], [], [], 'r.')
+
+    ax.set_ylim(min([min(historia_y1), min(historia_y2), min(historia_y3)]),
+                max([max(historia_y1), max(historia_y2), max(historia_y3)]))
+
+    ax.set_xlim(min([min(historia_x1), min(historia_x2), min(historia_x3)]),
+                max([max(historia_x1), max(historia_x2), max(historia_x3)]))
+
+    ax.set_zlim(min([min(historia_z1), min(historia_z2), min(historia_z3)]),
+                max([max(historia_z1), max(historia_z2), max(historia_z3)]))
+
+    def update(i):
+        x = [historia_x1[i], historia_x2[i], historia_x3[i]]
+        y = [historia_y1[i], historia_y2[i], historia_y3[i]]
+        z = [historia_z1[i], historia_z2[i], historia_z3[i]]
+        sp.set_data(x, y)
+        sp.set_3d_properties(z)
+        return sp,
+
+    # Creacion de la animación, 100 frames signifca que cada 100 ms
+    # llama a update con un valor entre 0 y 99
+    # Con repeat = False hace que solo se dibujen los frames una vez
+    ani = animation.FuncAnimation(fig, update, frames=len(historia_x1), interval=20, repeat=False)
+    plt.show()
+
