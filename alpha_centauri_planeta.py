@@ -36,14 +36,14 @@ planeta = {'masa': constantes.MASA_TIERRA,
            'nombre': "Planeta"}
 
 # 150 años
-steps = 366 * 100
+steps = 366 * 150
 
 # Lista de cuerpos que componen el sistema
 cuerpos = [estrella1, estrella2, planeta]
 
 # Listas en memoria para guardar todos los datos de la evolución para luego graficarlos.
 
-guarde_cada = 20
+guarde_cada = 50
 
 historia_x1 = []
 historia_y1 = []
