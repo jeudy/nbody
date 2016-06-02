@@ -10,11 +10,11 @@ from calculos import calcula_energia_total
 # inicializacion de condiciones iniciales
 
 # Una hora en segundos
-dt = 60. * 60. * 24
+dt = 60. * 60.
 
 # Condiciones iniciales
 
-estrella1 = {'masa': constantes.MASA_SOL,
+estrella1 = {'masa': constantes.MASA_SOL/2,
              'posicion': np.array([-3 * sp.constants.astronomical_unit, 0, 0]),
              'velocidad': np.array([0, 5E3, 0])}
 
@@ -46,7 +46,7 @@ save_every = 10
 etot_inicial = calcula_energia_total(cuerpos)
 
 while steps >= 0:
-    leapfrog_step(cuerpos, dt)
+    euler_step(cuerpos, dt)
     # Mensaje para ir viendo el avance del proceso
     if steps % 1000 == 0:
         print "Faltan %d steps " % (steps)
