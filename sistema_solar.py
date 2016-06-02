@@ -16,18 +16,18 @@ dt = 60. * 60. * 24
 # Condiciones iniciales
 # El Sol estará en el origen de coordenadas y en reposo
 sol = {'masa': constantes.MASA_SOL,
-       'posicion': np.array([0, 0, 0]),
-       'velocidad': np.array([0, 0, 0])}
+       'posicion': np.array([0., 0., 0.]),
+       'velocidad': np.array([0., 0., 0.])}
 
 # La Tierra estará a 1 UA y la velocidad inicial será el promedio de su velocidad orbital: ~29 km/s
 tierra = {'masa': constantes.MASA_TIERRA,
-          'posicion': np.array([sp.constants.astronomical_unit, 0, 0]),
-          'velocidad': np.array([0, 2.9E4, 0])}
+          'posicion': np.array([sp.constants.astronomical_unit, 0., 0.]),
+          'velocidad': np.array([0., 2.9E4, 0.])}
 
 # Júpiter estará a 5 UA y la velocidad inicial será el promedio de su velocidad orbital: ~13 km/s
 jupiter = {'masa': constantes.MASA_JUPITER,
-           'posicion': np.array([-5.0 * sp.constants.astronomical_unit, 0, 0]),
-           'velocidad': np.array([0, -1.3E4, 0])}
+           'posicion': np.array([-5.0 * sp.constants.astronomical_unit, 0., 0.]),
+           'velocidad': np.array([0., -1.3E4, 0.])}
 
 # Integraremos la ecuación de movimiento por 11 años
 # (aproximadamente, el periodo orbital de Jupiter
@@ -60,13 +60,13 @@ aceleraciones_i0 = []
 
 i = 0
 
-for cuerpo in cuerpos:
-    aceleraciones_i0.insert(i, calcular_aceleracion(cuerpo, cuerpos))
-    i += 1
+# for cuerpo in cuerpos:
+#     aceleraciones_i0.insert(i, calcular_aceleracion(cuerpo, cuerpos))
+#     i += 1
 
 while steps >= 0:
-    leapfrog_step(cuerpos, aceleraciones_i0, dt)
-    #euler_step(cuerpos, dt)
+    # leapfrog_step(cuerpos, aceleraciones_i0, dt)
+    euler_step(cuerpos, dt)
     # Mensaje para ir viendo el avance del proceso
     if steps % 1000 == 0:
         print "Faltan %d steps " % (steps)
