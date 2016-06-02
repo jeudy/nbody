@@ -15,8 +15,7 @@ from matplotlib import animation
 
 visualizacion = raw_input("Como desea visualizar resultados? estatico o animado? ")
 
-# OJO, cambiar a mas pequeño y ver valor de conservacion de energia
-dt = 60. * 60. * 24.
+dt = 60. * 60.
 
 # Condiciones iniciales
 
@@ -35,15 +34,15 @@ planeta = {'masa': constantes.MASA_TIERRA,
            'velocidad': np.array([0, -3.1E4, 0]),
            'nombre': "Planeta"}
 
-# 150 años
-steps = 366 * 150
+# 30 años
+steps = 366 * 30 * 24
 
 # Lista de cuerpos que componen el sistema
 cuerpos = [estrella1, estrella2, planeta]
 
 # Listas en memoria para guardar todos los datos de la evolución para luego graficarlos.
 
-guarde_cada = 50
+guarde_cada = 300
 
 historia_x1 = []
 historia_y1 = []
@@ -128,4 +127,3 @@ else:
     # Con repeat = False hace que solo se dibujen los frames una vez
     ani = animation.FuncAnimation(fig, update, frames=len(historia_x1), interval=20, repeat=False)
     plt.show()
-
